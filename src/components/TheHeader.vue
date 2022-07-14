@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { ChevronDownIcon } from "@heroicons/vue/solid";
 
 const navs = ref([
@@ -34,10 +34,34 @@ const navs = ref([
     ],
   },
 ]);
+const scrolled = ref(false);
+
+var prevScrollpos = window.pageYOffset;
+
+const handleScroll = () => {
+  var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    scrolled.value = false;
+  } else {
+    scrolled.value = true;
+  }
+  prevScrollpos = currentScrollPos;
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 z-30 w-full bg-black">
+  <header
+    class="fixed left-0 z-30 w-full bg-black transition-all duration-300 ease-in-out"
+    :class="scrolled ? '-top-20' : 'top-0'"
+  >
     <nav class="container flex items-center justify-between py-4">
       <h4 class="text-2xl font-bold">ANIDEX</h4>
       <ul class="flex items-center gap-8 font-medium text-[#939393]">
