@@ -35,25 +35,24 @@ const navs = ref([
   },
 ]);
 const scrolled = ref(false);
+const prevScrollpos = ref(window.pageYOffset);
 
-var prevScrollpos = window.pageYOffset;
-
-const handleScroll = () => {
-  var currentScrollPos = window.pageYOffset;
-  if (prevScrollpos > currentScrollPos) {
+const onScroll = () => {
+  let currentScrollPos = window.pageYOffset;
+  if (prevScrollpos.value > currentScrollPos) {
     scrolled.value = false;
   } else {
     scrolled.value = true;
   }
-  prevScrollpos = currentScrollPos;
+  prevScrollpos.value = currentScrollPos;
 };
 
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", onScroll);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("scroll", onScroll);
 });
 </script>
 
